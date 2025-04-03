@@ -1,0 +1,36 @@
+---
+import PocketBase from 'pocketbase';
+
+export async function getStaticPaths() {
+  const pb = new PocketBase('http://127.0.0.1:8090'); // define inside the function
+  const records = await pb.collection('artists').getFullList();
+
+  return records.map((record) => ({
+    params: { slug: record.slug },
+    props: { artist: record },
+  }));
+}
+
+const { artist } = Astro.props;
+
+const pb = new PocketBase('http://127.0.0.1:8090'); // define again here for image urls
+const getImageUrl = (field) =>
+  `http://127.0.0.1:8090/api/files/${artist.collectionId}/${artist.id}/${artist[field]}`;
+---
+
+<html>
+  <head><title>{artist.name}</title></head>
+  <body>
+    <h1>{artist.artwork_title} ({artist.artwork_date})</h1>
+    <h2>{artist.name}</h2>
+    <img src={getImageUrl('profile')} width="120" alt="artist profile" />
+    <p set:html={artist.artwork_description}></p>
+    <img src={getImageUrl('artwork')} alt={artist.artwork_title} />
+    <h3>Contact:</h3>
+    <ul>
+      <li>Email: <a href={`mailto:${artist.email}`}>{artist.email}</a></li>
+      <li>Portfolio: <a href={artist.portfolio}>{artist.portfolio}</a></li>
+      <li>Social: <a href={artist.social_media}>{artist.social_media}</a></li>
+    </ul>
+  </body>
+</html>
