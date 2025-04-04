@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 
 export async function getStaticPaths() {
-  const pb = new PocketBase('http://127.0.0.1:8090'); // define inside the function
+  const pb = new PocketBase('https://my-pocketbase-deploy-production.up.railway.app');
   const records = await pb.collection('artists').getFullList();
 
   return records.map((record) => ({
