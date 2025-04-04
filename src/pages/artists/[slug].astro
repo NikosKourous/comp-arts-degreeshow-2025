@@ -23,9 +23,9 @@ const getImageUrl = (field) =>
   <body>
     <h1>{artist.artwork_title} ({artist.artwork_date})</h1>
     <h2>{artist.name}</h2>
-    <img src={getImageUrl('profile')} width="120" alt="artist profile" />
+    <img src={artist.profile} alt="Profile image" width="120" />
     <p set:html={artist.artwork_description}></p>
-    <img src={getImageUrl('artwork')} alt={artist.artwork_title} />
+    <img src={artist.artwork} alt={artist.artwork_title} />
     <h3>Contact:</h3>
     <ul>
       <li>Email: <a href={`mailto:${artist.email}`}>{artist.email}</a></li>
